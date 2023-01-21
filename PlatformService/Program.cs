@@ -1,5 +1,6 @@
 global using Microsoft.EntityFrameworkCore;
 global using PlatformService.Data;
+using PlatformService.SynceDataService.Htpp;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +18,11 @@ var builder = WebApplication.CreateBuilder(args);
 
     // configure DI for application services
     services.AddScoped<IPlatformRepo, PlatformRepo>();
+
+    services.AddHttpClient<ICommandDataClient, HttpCommandDataClient>();
+
+    Console.WriteLine($"---> CommandService Endpoint {builder.Configuration["CommandService"]}");
+
 }
 
 
@@ -32,6 +38,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+
 PrepDb.PrepPopilation(app);
 
 app.UseHttpsRedirection();

@@ -2,6 +2,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using PlatformService.Dtos;
 using PlatformService.Models;
+using PlatformService.SynceDataService.Htpp;
 
 namespace PlatformService.Controllers
 {
@@ -11,11 +12,16 @@ namespace PlatformService.Controllers
     {
         private readonly IPlatformRepo _repository;
         private readonly IMapper _mapper;
+        private readonly ICommandDataClient _commandDataClient;
 
-        public PlatformsController(IPlatformRepo repository, IMapper mapper)
+        public PlatformsController(
+            IPlatformRepo repository,
+            IMapper mapper,
+            ICommandDataClient commandDataClient)
         {
             _repository = repository;
             _mapper = mapper;
+            _commandDataClient = commandDataClient;
         }
 
         [HttpGet]
@@ -40,7 +46,7 @@ namespace PlatformService.Controllers
         }
 
         [HttpPost]
-        public ActionResult<PlatformReadDto> CreatePlatform(PlatformCreateDto platformCreateDto)
+        public async Task<ActionResult<PlatformReadDto>> CreatePlatform(PlatformCreateDto platformCreateDto)
         {
             var platformModel = _mapper.Map<Platform>(platformCreateDto);
             _repository.CreatePlatform(platformModel);
@@ -48,12 +54,22 @@ namespace PlatformService.Controllers
 
             var platformReadDto = _mapper.Map<PlatformReadDto>(platformModel);
 
+            try
+            {
+                await _commandDataClient.SendPlatformToCommand(platformReadDto);
+            }
+            catch (Exception ex)
+            {
 
-            var createdResource = new { platformReadDto };
-            var actionName = nameof(GetPlatformById);
-            var routeValues = new { Id = platformReadDto.ID };
-            return CreatedAtAction(actionName, routeValues, createdResource);
-            // Location: .../api/Values/1?
+                Console.WriteLine($"---> Could not send snychronosly: {ex.Message}");
+            }
+
+            // var createdResource = new { platformReadDto };
+            // var actionName = nameof(GetPlatformById);
+            // var routeValues = new { Id = platformReadDto.ID };
+            // return CreatedAtRoute(actionName, routeValues, createdResource);
+
+            return CreatedAtRoute(nameof(GetPlatformById), new { Id = platformReadDto.ID }, platformReadDto);
         }
     }
 }
