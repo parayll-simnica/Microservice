@@ -10,7 +10,17 @@ var builder = WebApplication.CreateBuilder(args);
     var services = builder.Services;
     var env = builder.Environment;
 
-    services.AddDbContext<AppDbContext>();
+    if (env.IsProduction())
+    {
+        Console.WriteLine("---> Using SqlServer Db");
+        services.AddDbContext<AppDbContext>(opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("PlatformsConn")));
+    }
+    else
+    {
+        Console.WriteLine("---> Using InMem Db");
+        services.AddDbContext<AppDbContext>(opt => opt.UseInMemoryDatabase("InMem"));
+    }
+
     services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
     services.AddCors();
@@ -40,7 +50,7 @@ if (app.Environment.IsDevelopment())
 }
 
 
-PrepDb.PrepPopilation(app);
+PrepDb.PrepPopilation(app, builder.Environment.IsProduction());
 
 app.UseHttpsRedirection();
 
