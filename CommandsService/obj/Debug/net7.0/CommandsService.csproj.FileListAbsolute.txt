@@ -1,5 +1,4 @@
 /Users/parayllsimnica/asp.net/Microservice/CommandsService/bin/Debug/net7.0/appsettings.Development.json
-/Users/parayllsimnica/asp.net/Microservice/CommandsService/bin/Debug/net7.0/appsettings.json
 /Users/parayllsimnica/asp.net/Microservice/CommandsService/bin/Debug/net7.0/CommandsService
 /Users/parayllsimnica/asp.net/Microservice/CommandsService/bin/Debug/net7.0/CommandsService.deps.json
 /Users/parayllsimnica/asp.net/Microservice/CommandsService/bin/Debug/net7.0/CommandsService.runtimeconfig.json

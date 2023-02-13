@@ -1,59 +1,53 @@
+using System;
+using System.Linq;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using PlatformService.Models;
 
 namespace PlatformService.Data
 {
     public static class PrepDb
     {
-        public static void PrepPopilation(IApplicationBuilder app, bool isProduction)
+        public static void PrepPopulation(IApplicationBuilder app, bool isProd)
         {
             using (var serviceScope = app.ApplicationServices.CreateScope())
             {
-                ApplyMigrationsAndSeedData(serviceScope.ServiceProvider.GetService<AppDbContext>(), isProduction);
+                SeedData(serviceScope.ServiceProvider.GetService<AppDbContext>(), isProd);
             }
         }
 
-        private static void ApplyMigrationsAndSeedData(AppDbContext context, bool isProduction)
+        private static void SeedData(AppDbContext context, bool isProd)
         {
-            ApplyMigrationIfInProduction(context, isProduction);
-            SeedPlatformDataIfNoneExist(context);
-        }
-
-        private static void ApplyMigrationIfInProduction(AppDbContext context, bool isProduction)
-        {
-            if (!isProduction)
-                return;
-
-            Console.WriteLine("---> Attempting to apply migration...");
-            try
+            if (isProd)
             {
-                context.Database.Migrate();
-                Console.WriteLine("---> Migration applied successfully");
+                Console.WriteLine("--> Attempting to apply migrations...");
+                try
+                {
+                    context.Database.Migrate();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"--> Could not run migrations: {ex.Message}");
+                }
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"---> Could not run migration: {ex.Message}");
-            }
-        }
 
-        private static void SeedPlatformDataIfNoneExist(AppDbContext context)
-        {
-            if (context.Platforms.Any())
+            if (!context.Platforms.Any())
+            {
+                Console.WriteLine("--> Seeding Data...");
+
+                context.Platforms.AddRange(
+                    new Platform() { Name = "Dot Net", Publisher = "Microsoft", Cost = "Free" },
+                    new Platform() { Name = "SQL Server Express", Publisher = "Microsoft", Cost = "Free" },
+                    new Platform() { Name = "Kubernetes", Publisher = "Cloud Native Computing Foundation", Cost = "Free" }
+                );
+
+                context.SaveChanges();
+            }
+            else
             {
                 Console.WriteLine("--> We already have data");
-                return;
             }
-
-            Console.WriteLine("--> Seeding Data...");
-            var platforms = new[]
-            {
-            new Platform { Name = "Dot Net", Publisher = "Microsoft", Cost = "Free" },
-            new Platform { Name = "SQL Server", Publisher = "Microsoft", Cost = "Free" },
-            new Platform { Name = "Kubernetes", Publisher = "Cloud Native Computing", Cost = "Free" }
-        };
-
-            context.Platforms.AddRange(platforms);
-            context.SaveChanges();
-            Console.WriteLine("--> Data seeded successfully");
         }
     }
 }

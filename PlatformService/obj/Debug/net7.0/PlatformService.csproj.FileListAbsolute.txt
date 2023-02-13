@@ -1,5 +1,4 @@
 /Users/parayllsimnica/asp.net/Microservice/PlatformService/bin/Debug/net7.0/appsettings.Development.json
-/Users/parayllsimnica/asp.net/Microservice/PlatformService/bin/Debug/net7.0/appsettings.json
 /Users/parayllsimnica/asp.net/Microservice/PlatformService/bin/Debug/net7.0/PlatformService
 /Users/parayllsimnica/asp.net/Microservice/PlatformService/bin/Debug/net7.0/PlatformService.deps.json
 /Users/parayllsimnica/asp.net/Microservice/PlatformService/bin/Debug/net7.0/PlatformService.runtimeconfig.json
