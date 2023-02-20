@@ -1,0 +1,29 @@
+﻿<Properties StartupConfiguration="{8778245F-B467-459C-BD7A-5FE5F66F718A}|https">
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Data/AppDbContext.cs">
+    <Files>
+      <File FileName="Data/CommandRepo.cs" Line="10" Column="53" />
+      <File FileName="Data/ICommandRepo.cs" Line="15" Column="25" />
+      <File FileName="Data/AppDbContext.cs" Line="29" Column="6" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="CommandsService" expanded="True">
+            <Node name="CommandsService" expanded="True">
+              <Node name="Data" expanded="True">
+                <Node name="AppDbContext.cs" selected="True" />
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.ItemProperties.CommandsService PreferredExecutionTarget="/Applications/Google Chrome.app" />
+</Properties>
