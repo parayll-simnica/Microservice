@@ -35,7 +35,7 @@ namespace ComandsService.Data
             return _context.Platforms.ToList();
         }
 
-        public Command GetComand(int platformId, int commandId)
+        public Command GetCommand(int platformId, int commandId)
         {
             return _context.Commands
                 .Where(c => c.PlatformId == platformId && c.Id == commandId).FirstOrDefault();
