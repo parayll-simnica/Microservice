@@ -3,9 +3,7 @@ global using PlatformService.Data;
 using PlatformService.SynceDataService.Htpp;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
-
-
-
+using PlatformService.AsyncDataServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,6 +37,7 @@ services.AddControllers();
 services.AddScoped<IPlatformRepo, PlatformRepo>();
 
 services.AddHttpClient<ICommandDataClient, HttpCommandDataClient>();
+services.AddSingleton<IMessageBusClient, MessageBusClient>();
 
 Console.WriteLine($"---> CommandService Endpoint {builder.Configuration["CommandService"]}");
 
